@@ -58,22 +58,7 @@ parse(Uint8List data) {
       .toString());
   String response = content.substring(MAGIC_STRING.length + 8, data.length);
 
-  bool event = false;
-  /**
-   * got an event? high bit is set!
-   * the implemantation of unpackInt
-   * seems a little bit wrong;
-   * should return 1 here, right?
-   **/
-  if ((type >> 31) == -1) {
-    event = true;
-    type = type & 0x7f;
-  }
-
-  // print("event: $event");
-  // print("type: $type");
-  // print("size: $size");
-  // print("response: $response");
+  bool event = (content.codeUnitAt(MAGIC_STRING.length + 7) & 0x80) == 0x80;
 
   return new ParseResult(
       event: event, size: size, response: response, type: type);
