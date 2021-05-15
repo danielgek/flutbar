@@ -1,7 +1,6 @@
 const MAGIC_STRING = "i3-ipc";
 
 class CommandTypes {
-  const CommandTypes();
   static const int RUN_COMMAND = 0;
   static const int GET_WORKSPACES = 1;
   static const int SUBSCRIBE = 2;
@@ -33,7 +32,7 @@ class ResponseTypes {
   static const int GET_BINDING_STATE = 12;
 }
 
-class Events {
+class EventsTypes {
   static const int WORKSPACE = 0;
   static const int OUTPUT = 1;
   static const int MODE = 2;
@@ -44,6 +43,6 @@ class Events {
   static const int TICK = 7;
 }
 
-List<String> eventCommandNames =
+final List<String> EventCommandNames =
     "workspace output mode window barconfig_update binding shutdown tick"
         .split(' ');

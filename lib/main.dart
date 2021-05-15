@@ -1,6 +1,5 @@
 import 'package:flutbar/I3Widget.dart';
 import 'package:flutbar/i3/core.dart';
-import 'package:flutbar/i3/models/workspace.dart';
 import 'package:flutter/material.dart';
 
 void main() {

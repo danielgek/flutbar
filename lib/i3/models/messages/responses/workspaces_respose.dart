@@ -1,23 +1,6 @@
 import 'dart:convert';
 
-class Rect {
-  int x;
-  int y;
-  int width;
-  int height;
-
-  Rect(this.x, this.y, this.width, this.height);
-
-  factory Rect.fromJson(dynamic json) {
-    return Rect(json['x'] as int, json['y'] as int, json['width'] as int,
-        json['height'] as int);
-  }
-
-  @override
-  String toString() {
-    return '{ ${this.x}, ${this.y},${this.width}, ${this.height} }';
-  }
-}
+import 'package:flutbar/i3/models/common/rect.dart';
 
 class WorkSpace {
   String name;

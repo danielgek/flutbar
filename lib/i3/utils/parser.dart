@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutbar/i3/utils/constants.dart';
 
 String packInt(int size, int type) {
-  var result = '';
+  String result = '';
   result += String.fromCharCode(size & 0xFF);
   result += String.fromCharCode(size >> 8 & 0xFF);
   result += String.fromCharCode(size >> 16 & 0xFF);
@@ -17,16 +17,16 @@ String packInt(int size, int type) {
 }
 
 int unpackInt(String str) {
-  var b1 = str.codeUnitAt(0) & 0xFF;
-  var b2 = str.codeUnitAt(1) & 0xFF;
-  var b3 = str.codeUnitAt(2) & 0xFF;
-  var b4 = str.codeUnitAt(3) & 0xFF;
+  int b1 = str.codeUnitAt(0) & 0xFF;
+  int b2 = str.codeUnitAt(1) & 0xFF;
+  int b3 = str.codeUnitAt(2) & 0xFF;
+  int b4 = str.codeUnitAt(3) & 0xFF;
 
   return (((((b4 << 8) + b3) << 8) + b2) << 8) + b1;
 }
 
 String format(int type, {String payload = ''}) {
-  var size = payload.length;
+  int size = payload.length;
   String msg = MAGIC_STRING;
   msg += packInt(size, type);
   msg += payload;
