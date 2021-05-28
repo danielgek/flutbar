@@ -38,10 +38,13 @@ class ParseResult {
   final int size;
   final int type;
   final String response;
-  ParseResult({this.event, this.size, this.response, this.type});
+  ParseResult(
+      {required this.event,
+      required this.size,
+      required this.response,
+      required this.type});
 
-  String toString() =>
-      "ParseResult:(event: $event, size: $size, type: $type, response: $response";
+  String toString() => "ParseResult:(event: $event, size: $size, type: $type)";
 }
 
 parse(Uint8List data) {
@@ -59,6 +62,8 @@ parse(Uint8List data) {
   String response = content.substring(MAGIC_STRING.length + 8, data.length);
 
   bool event = (content.codeUnitAt(MAGIC_STRING.length + 7) & 0x80) == 0x80;
+
+  if (event) type = type = type & 0x7f;
 
   return new ParseResult(
       event: event, size: size, response: response, type: type);

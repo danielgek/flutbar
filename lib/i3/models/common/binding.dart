@@ -6,19 +6,18 @@ class Binding {
   String inputType;
 
   Binding(
-      {this.command,
-      this.eventStateMask,
-      this.inputCode,
-      this.symbol,
-      this.inputType});
+      {required this.command,
+      required this.eventStateMask,
+      required this.inputCode,
+      required this.symbol,
+      required this.inputType});
 
-  Binding.fromJson(Map<String, dynamic> json) {
-    command = json['command'];
-    eventStateMask = json['event_state_mask'].cast<String>();
-    inputCode = json['input_code'];
-    symbol = json['symbol'];
-    inputType = json['input_type'];
-  }
+  Binding.fromJson(Map<String, dynamic> json)
+      : command = json['command'],
+        eventStateMask = json['event_state_mask'].cast<String>(),
+        inputCode = json['input_code'],
+        symbol = json['symbol'],
+        inputType = json['input_type'];
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

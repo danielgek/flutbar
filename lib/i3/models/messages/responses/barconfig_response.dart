@@ -9,7 +9,7 @@ class BarConfigResponse {
   String position;
   String statusCommand;
   String font;
-  Gaps gaps;
+  Gaps? gaps;
   int barHeight;
   int statusPadding;
   int statusEdgePadding;
@@ -18,43 +18,42 @@ class BarConfigResponse {
   bool bindingModeIndicator;
   bool verbose;
   bool pangoMarkup;
-  Colors colors;
+  Colors? colors;
 
   BarConfigResponse(
-      {this.id,
-      this.mode,
-      this.position,
-      this.statusCommand,
-      this.font,
-      this.gaps,
-      this.barHeight,
-      this.statusPadding,
-      this.statusEdgePadding,
-      this.workspaceButtons,
-      this.workspaceMinWidth,
-      this.bindingModeIndicator,
-      this.verbose,
-      this.pangoMarkup,
-      this.colors});
+      {required this.id,
+      required this.mode,
+      required this.position,
+      required this.statusCommand,
+      required this.font,
+      required this.gaps,
+      required this.barHeight,
+      required this.statusPadding,
+      required this.statusEdgePadding,
+      required this.workspaceButtons,
+      required this.workspaceMinWidth,
+      required this.bindingModeIndicator,
+      required this.verbose,
+      required this.pangoMarkup,
+      required this.colors});
 
-  BarConfigResponse.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    mode = json['mode'];
-    position = json['position'];
-    statusCommand = json['status_command'];
-    font = json['font'];
-    gaps = json['gaps'] != null ? new Gaps.fromJson(json['gaps']) : null;
-    barHeight = json['bar_height'];
-    statusPadding = json['status_padding'];
-    statusEdgePadding = json['status_edge_padding'];
-    workspaceButtons = json['workspace_buttons'];
-    workspaceMinWidth = json['workspace_min_width'];
-    bindingModeIndicator = json['binding_mode_indicator'];
-    verbose = json['verbose'];
-    pangoMarkup = json['pango_markup'];
-    colors =
-        json['colors'] != null ? new Colors.fromJson(json['colors']) : null;
-  }
+  BarConfigResponse.fromJson(Map<String, dynamic> json)
+      : id = json['id'] as String,
+        mode = json['mode'] as String,
+        position = json['position'] as String,
+        statusCommand = json['status_command'] as String,
+        font = json['font'] as String,
+        gaps = json['gaps'] != null ? new Gaps.fromJson(json['gaps']) : null,
+        barHeight = json['bar_height'] as int,
+        statusPadding = json['status_padding'] as int,
+        statusEdgePadding = json['status_edge_padding'] as int,
+        workspaceButtons = json['workspace_buttons'] as bool,
+        workspaceMinWidth = json['workspace_min_width'] as int,
+        bindingModeIndicator = json['binding_mode_indicator'] as bool,
+        verbose = json['verbose'] as bool,
+        pangoMarkup = json['pango_markup'] as bool,
+        colors =
+            json['colors'] != null ? new Colors.fromJson(json['colors']) : null;
 
   factory BarConfigResponse.fromJsonString(String json) {
     return BarConfigResponse.fromJson(jsonDecode(json));
@@ -68,7 +67,7 @@ class BarConfigResponse {
     data['status_command'] = this.statusCommand;
     data['font'] = this.font;
     if (this.gaps != null) {
-      data['gaps'] = this.gaps.toJson();
+      data['gaps'] = this.gaps?.toJson();
     }
     data['bar_height'] = this.barHeight;
     data['status_padding'] = this.statusPadding;
@@ -79,7 +78,7 @@ class BarConfigResponse {
     data['verbose'] = this.verbose;
     data['pango_markup'] = this.pangoMarkup;
     if (this.colors != null) {
-      data['colors'] = this.colors.toJson();
+      data['colors'] = this.colors?.toJson();
     }
     return data;
   }

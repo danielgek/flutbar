@@ -10,11 +10,22 @@ class WorkSpace {
   bool focused;
   Rect rect;
 
-  WorkSpace(this.name, this.id, this.index, this.visible, this.focused);
+  WorkSpace(
+      {required this.name,
+      required this.id,
+      required this.index,
+      required this.visible,
+      required this.focused,
+      required this.rect});
 
   factory WorkSpace.fromJson(dynamic json) {
-    return WorkSpace(json['name'] as String, json['id'] as int,
-        json['num'] as int, json['visible'] as bool, json['focused'] as bool);
+    return WorkSpace(
+        name: json['name'] as String,
+        id: json['id'] as int,
+        index: json['num'] as int,
+        visible: json['visible'] as bool,
+        focused: json['focused'] as bool,
+        rect: Rect.fromJson(json['rect']));
   }
 
   static List<WorkSpace> fromJsonString(String json) {
@@ -27,3 +38,5 @@ class WorkSpace {
     return '{ name: ${this.name}, id: ${this.id}, index: ${this.index}, visible: ${this.visible}, focused: ${this.focused} }';
   }
 }
+
+typedef Workspaces = List<WorkSpace>;

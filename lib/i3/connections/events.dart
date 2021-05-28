@@ -14,45 +14,48 @@ import 'package:flutbar/i3/utils/parser.dart';
 import 'package:flutbar/i3/utils/constants.dart';
 
 class EventsConnection {
-  String path = Platform.environment['I3SOCK'];
+  String path = Platform.environment['I3SOCK'] as String;
   Socket connection;
-  Future<bool> connected;
-
-  final _workspcaceController = StreamController<WorspaceEvent>();
-  Stream<WorspaceEvent> get workspcaceEvents =>
-      _workspcaceController.stream.asBroadcastStream();
-
-  final _barconfigUpdateController = StreamController<BarConfigEvent>();
-  Stream<BarConfigEvent> get barconfigUpdateEvents =>
-      _barconfigUpdateController.stream.asBroadcastStream();
-
-  final _bindingController = StreamController<BindingEvent>();
-  Stream<BindingEvent> get bindingEvents =>
-      _bindingController.stream.asBroadcastStream();
-
-  final _outputController = StreamController<OutputEvent>();
-  Stream<OutputEvent> get outputEvents =>
-      _outputController.stream.asBroadcastStream();
-
-  final _modeController = StreamController<ModeEvent>();
-  Stream<ModeEvent> get modeEvents =>
-      _modeController.stream.asBroadcastStream();
-
-  final _shutdownController = StreamController<ShutdownEvent>();
-  Stream<ShutdownEvent> get shutdownEvents =>
-      _shutdownController.stream.asBroadcastStream();
-
-  final _tickController = StreamController<TickEvent>();
-  Stream<TickEvent> get tickEvents =>
-      _tickController.stream.asBroadcastStream();
-
-  final _windowController = StreamController<WindowEvent>();
-  Stream<WindowEvent> get windowEvents =>
-      _windowController.stream.asBroadcastStream();
-
-  EventsConnection() {
-    connected = _init();
+  EventsConnection({required this.connection}) {
+    print("Connected EventsConnection");
+    this.connection.listen((event) {
+      _eventMessage(parse(event));
+    });
   }
+  static Future<EventsConnection> getInstance() async {
+    final host = InternetAddress(Platform.environment['I3SOCK'] as String,
+        type: InternetAddressType.unix);
+
+    EventsConnection connection =
+        EventsConnection(connection: await Socket.connect(host, 0));
+    return connection;
+  }
+
+  final _workspcaceController = StreamController<WorspaceEvent>.broadcast();
+  Stream<WorspaceEvent> get workspcaceEvents => _workspcaceController.stream;
+
+  final _barconfigUpdateController =
+      StreamController<BarConfigEvent>.broadcast();
+  Stream<BarConfigEvent> get barconfigUpdateEvents =>
+      _barconfigUpdateController.stream;
+
+  final _bindingController = StreamController<BindingEvent>.broadcast();
+  Stream<BindingEvent> get bindingEvents => _bindingController.stream;
+
+  final _outputController = StreamController<OutputEvent>.broadcast();
+  Stream<OutputEvent> get outputEvents => _outputController.stream;
+
+  final _modeController = StreamController<ModeEvent>.broadcast();
+  Stream<ModeEvent> get modeEvents => _modeController.stream;
+
+  final _shutdownController = StreamController<ShutdownEvent>.broadcast();
+  Stream<ShutdownEvent> get shutdownEvents => _shutdownController.stream;
+
+  final _tickController = StreamController<TickEvent>.broadcast();
+  Stream<TickEvent> get tickEvents => _tickController.stream;
+
+  final _windowController = StreamController<WindowEvent>.broadcast();
+  Stream<WindowEvent> get windowEvents => _windowController.stream;
 
   Future<bool> _init() {
     final host = InternetAddress(this.path, type: InternetAddressType.unix);
@@ -114,14 +117,14 @@ class EventsConnection {
             .add(WindowEvent.fromJson(jsonDecode(result.response)));
         break;
       default:
-        print('Unhandled Event $result.type');
+        print('Unhandled Event $result');
     }
   }
 
   void subscribe(List<int> channels) async {
-    await connected;
     this.connection.write(format(CommandTypes.SUBSCRIBE,
-        payload: jsonEncode(channels.map((e) => EventCommandNames[e]))));
+        payload: jsonEncode(
+            channels.map((e) => EventCommandNames.elementAt(e)).toList())));
   }
 
   destroy() {

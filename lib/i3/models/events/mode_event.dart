@@ -1,13 +1,12 @@
 class ModeEvent {
-  String change;
-  bool pangoMarkup;
+  String? change;
+  bool? pangoMarkup;
 
-  ModeEvent({this.change, this.pangoMarkup});
+  ModeEvent({required this.change, required this.pangoMarkup});
 
-  ModeEvent.fromJson(Map<String, dynamic> json) {
-    change = json['change'];
-    pangoMarkup = json['pango_markup'];
-  }
+  ModeEvent.fromJson(Map<String, dynamic> json)
+      : change = json['change'],
+        pangoMarkup = json['pango_markup'];
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

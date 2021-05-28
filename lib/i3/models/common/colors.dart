@@ -22,51 +22,50 @@ class Colors {
   String bindingModeText;
 
   Colors(
-      {this.background,
-      this.statusline,
-      this.separator,
-      this.focusedBackground,
-      this.focusedStatusline,
-      this.focusedSeparator,
-      this.focusedWorkspaceBorder,
-      this.focusedWorkspaceBg,
-      this.focusedWorkspaceText,
-      this.inactiveWorkspaceBorder,
-      this.inactiveWorkspaceBg,
-      this.inactiveWorkspaceText,
-      this.activeWorkspaceBorder,
-      this.activeWorkspaceBg,
-      this.activeWorkspaceText,
-      this.urgentWorkspaceBorder,
-      this.urgentWorkspaceBg,
-      this.urgentWorkspaceText,
-      this.bindingModeBorder,
-      this.bindingModeBg,
-      this.bindingModeText});
+      {required this.background,
+      required this.statusline,
+      required this.separator,
+      required this.focusedBackground,
+      required this.focusedStatusline,
+      required this.focusedSeparator,
+      required this.focusedWorkspaceBorder,
+      required this.focusedWorkspaceBg,
+      required this.focusedWorkspaceText,
+      required this.inactiveWorkspaceBorder,
+      required this.inactiveWorkspaceBg,
+      required this.inactiveWorkspaceText,
+      required this.activeWorkspaceBorder,
+      required this.activeWorkspaceBg,
+      required this.activeWorkspaceText,
+      required this.urgentWorkspaceBorder,
+      required this.urgentWorkspaceBg,
+      required this.urgentWorkspaceText,
+      required this.bindingModeBorder,
+      required this.bindingModeBg,
+      required this.bindingModeText});
 
-  Colors.fromJson(Map<String, dynamic> json) {
-    background = json['background'];
-    statusline = json['statusline'];
-    separator = json['separator'];
-    focusedBackground = json['focused_background'];
-    focusedStatusline = json['focused_statusline'];
-    focusedSeparator = json['focused_separator'];
-    focusedWorkspaceBorder = json['focused_workspace_border'];
-    focusedWorkspaceBg = json['focused_workspace_bg'];
-    focusedWorkspaceText = json['focused_workspace_text'];
-    inactiveWorkspaceBorder = json['inactive_workspace_border'];
-    inactiveWorkspaceBg = json['inactive_workspace_bg'];
-    inactiveWorkspaceText = json['inactive_workspace_text'];
-    activeWorkspaceBorder = json['active_workspace_border'];
-    activeWorkspaceBg = json['active_workspace_bg'];
-    activeWorkspaceText = json['active_workspace_text'];
-    urgentWorkspaceBorder = json['urgent_workspace_border'];
-    urgentWorkspaceBg = json['urgent_workspace_bg'];
-    urgentWorkspaceText = json['urgent_workspace_text'];
-    bindingModeBorder = json['binding_mode_border'];
-    bindingModeBg = json['binding_mode_bg'];
-    bindingModeText = json['binding_mode_text'];
-  }
+  Colors.fromJson(Map<String, dynamic> json)
+      : background = json['background'],
+        statusline = json['statusline'],
+        separator = json['separator'],
+        focusedBackground = json['focused_background'],
+        focusedStatusline = json['focused_statusline'],
+        focusedSeparator = json['focused_separator'],
+        focusedWorkspaceBorder = json['focused_workspace_border'],
+        focusedWorkspaceBg = json['focused_workspace_bg'],
+        focusedWorkspaceText = json['focused_workspace_text'],
+        inactiveWorkspaceBorder = json['inactive_workspace_border'],
+        inactiveWorkspaceBg = json['inactive_workspace_bg'],
+        inactiveWorkspaceText = json['inactive_workspace_text'],
+        activeWorkspaceBorder = json['active_workspace_border'],
+        activeWorkspaceBg = json['active_workspace_bg'],
+        activeWorkspaceText = json['active_workspace_text'],
+        urgentWorkspaceBorder = json['urgent_workspace_border'],
+        urgentWorkspaceBg = json['urgent_workspace_bg'],
+        urgentWorkspaceText = json['urgent_workspace_text'],
+        bindingModeBorder = json['binding_mode_border'],
+        bindingModeBg = json['binding_mode_bg'],
+        bindingModeText = json['binding_mode_text'];
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

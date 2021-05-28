@@ -3,11 +3,10 @@ import 'dart:convert';
 class BindingStateResponse {
   String name;
 
-  BindingStateResponse(this.name);
+  BindingStateResponse({required this.name});
 
-  BindingStateResponse.fromJson(Map<String, dynamic> json) {
-    BindingStateResponse(name = json['name']);
-  }
+  BindingStateResponse.fromJson(Map<String, dynamic> json)
+      : name = json['name'] as String;
 
   factory BindingStateResponse.fromJsonString(String json) {
     return BindingStateResponse.fromJson(jsonDecode(json));

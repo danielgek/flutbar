@@ -4,13 +4,11 @@ class BindingEvent {
   String change;
   Binding binding;
 
-  BindingEvent({this.change, this.binding});
+  BindingEvent({required this.change, required this.binding});
 
-  BindingEvent.fromJson(Map<String, dynamic> json) {
-    change = json['change'];
-    binding =
-        json['binding'] != null ? new Binding.fromJson(json['binding']) : null;
-  }
+  BindingEvent.fromJson(Map<String, dynamic> json)
+      : change = json['change'],
+        binding = Binding.fromJson(json['binding']);
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

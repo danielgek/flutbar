@@ -11,44 +11,38 @@ class OutputResponse {
   String subpixelHinting;
   String transform;
   String currentWorkspace;
-  List<Modes> modes;
-  Modes currentMode;
+  List<Mode> modes;
+  Mode currentMode;
 
   OutputResponse(
-      {this.name,
-      this.make,
-      this.model,
-      this.serial,
-      this.active,
-      this.primary,
-      this.scale,
-      this.subpixelHinting,
-      this.transform,
-      this.currentWorkspace,
-      this.modes,
-      this.currentMode});
+      {required this.name,
+      required this.make,
+      required this.model,
+      required this.serial,
+      required this.active,
+      required this.primary,
+      required this.scale,
+      required this.subpixelHinting,
+      required this.transform,
+      required this.currentWorkspace,
+      required this.modes,
+      required this.currentMode});
 
-  OutputResponse.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    make = json['make'];
-    model = json['model'];
-    serial = json['serial'];
-    active = json['active'];
-    primary = json['primary'];
-    scale = json['scale'];
-    subpixelHinting = json['subpixel_hinting'];
-    transform = json['transform'];
-    currentWorkspace = json['current_workspace'];
-    if (json['modes'] != null) {
-      modes = new List<Modes>();
-      json['modes'].forEach((v) {
-        modes.add(new Modes.fromJson(v));
-      });
-    }
-    currentMode = json['current_mode'] != null
-        ? new Modes.fromJson(json['current_mode'])
-        : null;
-  }
+  OutputResponse.fromJson(Map<String, dynamic> json)
+      : name = json['name'] as String,
+        make = json['make'] as String,
+        model = json['model'] as String,
+        serial = json['serial'] as String,
+        active = json['active'],
+        primary = json['primary'],
+        scale = json['scale'],
+        subpixelHinting = json['subpixel_hinting'] as String,
+        transform = json['transform'] as String,
+        currentWorkspace = json['current_workspace'] as String,
+        modes = json['modes'] != null
+            ? json['modes'].map((v) => new Mode.fromJson(v))
+            : [],
+        currentMode = Mode.fromJson(json['current_mode']);
 
   static List<OutputResponse> fromJsonString(String json) {
     var tagObjsJson = jsonDecode('{ "list":' + json + '}')['list'] as List;
@@ -79,18 +73,17 @@ class OutputResponse {
   }
 }
 
-class Modes {
+class Mode {
   int width;
   int height;
   int refresh;
 
-  Modes({this.width, this.height, this.refresh});
+  Mode({required this.width, required this.height, required this.refresh});
 
-  Modes.fromJson(Map<String, dynamic> json) {
-    width = json['width'];
-    height = json['height'];
-    refresh = json['refresh'];
-  }
+  Mode.fromJson(Map<String, dynamic> json)
+      : width = json['width'],
+        height = json['height'],
+        refresh = json['refresh'];
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutbar/i3/models/common/binding.dart';
 import 'package:flutbar/i3/models/messages/responses/barconfig_response.dart';
 import 'package:flutbar/i3/models/messages/responses/barsconfig_response.dart';
 import 'package:flutbar/i3/models/messages/responses/bindingmodes_response.dart';
@@ -17,141 +15,159 @@ import 'package:flutbar/i3/models/messages/responses/workspaces_respose.dart';
 import 'package:flutbar/i3/utils/parser.dart';
 import 'package:flutbar/i3/utils/constants.dart';
 
-class MassagesConnection {
-  String path = Platform.environment['I3SOCK'];
+class MessagesConnection {
   Socket connection;
-  Future<bool> connected;
 
   final _messageController = StreamController<ParseResult>.broadcast();
-  Stream<ParseResult> get messageEvents =>
-      _messageController.stream.where((event) => event.type != null);
-
-  MassagesConnection() {
-    connected = _init();
+  Stream<ParseResult> get messageEvents => _messageController.stream;
+  MessagesConnection({required this.connection}) {
+    print("Connected MessagesConnection");
+    this
+        .connection
+        .listen((event) => this._messageController.sink.add(parse(event)));
+  }
+  static Future<MessagesConnection> getInstance() async {
+    final host = InternetAddress(Platform.environment['I3SOCK'] as String,
+        type: InternetAddressType.unix);
+    return MessagesConnection(connection: await Socket.connect(host, 0));
   }
 
-  Future<bool> _init() {
-    final host = InternetAddress(this.path, type: InternetAddressType.unix);
-    Future<bool> connection = Socket.connect(host, 0).then((value) {
-      if (value == null) {
-        return false;
-      }
-      print("Connected Messages");
-      this.connection = value;
-      this.connection.listen((event) {
-        this._messageController.sink.add(parse(event));
-      });
+  Future<List<WorkSpace>> get workspaces {
+    this.connection.write(format(CommandTypes.GET_WORKSPACES));
 
-      return true;
-    }).catchError((e) {
-      print("Unable to connect: $e");
-      return false;
-    });
-
-    return connection;
-  }
-
-  Stream<List<WorkSpace>> get workspaces {
-    this.connected.then(
-        (value) => this.connection.write(format(CommandTypes.GET_WORKSPACES)));
     return this
         .messageEvents
         .where((event) => event.type == CommandTypes.GET_WORKSPACES)
-        .map((event) => WorkSpace.fromJsonString(event.response));
+        .map((event) => parseResultByType<Workspaces>(event))
+        .first;
   }
 
-  Stream<List<CommandResponse>> runCommands(List<String> commands) {
-    this.connected.then((value) => this
+  Future<List<CommandResponse>> runCommands(List<String> commands) {
+    this
         .connection
-        .write(format(CommandTypes.RUN_COMMAND, payload: commands.join(';'))));
+        .write(format(CommandTypes.RUN_COMMAND, payload: commands.join(';')));
     return this
         .messageEvents
         .where((event) => event.type == CommandTypes.RUN_COMMAND)
-        .map((event) => CommandResponse.fromJsonString(event.response));
+        .map((event) => parseResultByType<List<CommandResponse>>(event))
+        .first;
   }
 
-  Stream<BarsConfigResponse> get barConfigIds {
-    this.connected.then(
-        (value) => this.connection.write(format(CommandTypes.GET_BAR_CONFIG)));
+  Future<BarsConfigResponse> get barConfigIds {
+    this.connection.write(format(CommandTypes.GET_BAR_CONFIG));
     return this
         .messageEvents
         .where((event) => event.type == CommandTypes.GET_BAR_CONFIG)
-        .map((event) => BarsConfigResponse.fromJsonString(event.response));
+        .map((event) => parseResultByType<BarsConfigResponse>(event))
+        .first;
   }
 
-  Stream<BarConfigResponse> getBarConfigById(String id) {
-    this.connected.then((value) => this
-        .connection
-        .write(format(CommandTypes.GET_BAR_CONFIG, payload: id)));
+  Future<BarConfigResponse> getBarConfigById(String id) {
+    this.connection.write(format(CommandTypes.GET_BAR_CONFIG, payload: id));
     return this
         .messageEvents
         .where((event) => event.type == CommandTypes.GET_BAR_CONFIG)
-        .map((event) => BarConfigResponse.fromJsonString(event.response));
+        .map((event) => parseResultByType<BarConfigResponse>(event))
+        .first;
   }
 
-  Stream<BindingModesResponse> get bindingModes {
-    this.connected.then((value) =>
-        this.connection.write(format(CommandTypes.GET_BINDING_MODES)));
+  Future<BindingModesResponse> get bindingModes {
+    this.connection.write(format(CommandTypes.GET_BINDING_MODES));
     return this
         .messageEvents
         .where((event) => event.type == CommandTypes.GET_BINDING_MODES)
-        .map((event) => BindingModesResponse.fromJsonString(event.response));
+        .map((event) => parseResultByType<BindingModesResponse>(event))
+        .first;
   }
 
-  Stream<BindingStateResponse> get bindingModeState {
-    this.connected.then((value) =>
-        this.connection.write(format(CommandTypes.GET_BINDING_STATE)));
+  Future<BindingStateResponse> get bindingModeState {
+    this.connection.write(format(CommandTypes.GET_BINDING_STATE));
     return this
         .messageEvents
         .where((event) => event.type == CommandTypes.GET_BINDING_STATE)
-        .map((event) => BindingStateResponse.fromJsonString(event.response));
+        .map((event) => parseResultByType<BindingStateResponse>(event))
+        .first;
   }
 
-  Stream<ConfigResponse> get config {
-    this.connected.then(
-        (value) => this.connection.write(format(CommandTypes.GET_CONFIG)));
+  Future<ConfigResponse> get config {
+    this.connection.write(format(CommandTypes.GET_CONFIG));
     return this
         .messageEvents
         .where((event) => event.type == CommandTypes.GET_CONFIG)
-        .map((event) => ConfigResponse.fromJsonString(event.response));
+        .map((event) => parseResultByType<ConfigResponse>(event))
+        .first;
   }
 
-  Stream<MarkResponse> get marks {
-    this
-        .connected
-        .then((value) => this.connection.write(format(CommandTypes.GET_MARKS)));
+  Future<MarkResponse> get marks {
+    this.connection.write(format(CommandTypes.GET_MARKS));
     return this
         .messageEvents
         .where((event) => event.type == CommandTypes.GET_MARKS)
-        .map((event) => MarkResponse.fromJsonString(event.response));
+        .map((event) => parseResultByType<MarkResponse>(event))
+        .first;
   }
 
-  Stream<List<OutputResponse>> get outputs {
-    this.connected.then(
-        (value) => this.connection.write(format(CommandTypes.GET_OUTPUTS)));
+  Future<List<OutputResponse>> get outputs {
+    this.connection.write(format(CommandTypes.GET_OUTPUTS));
     return this
         .messageEvents
         .where((event) => event.type == CommandTypes.GET_OUTPUTS)
-        .map((event) => OutputResponse.fromJsonString(event.response));
+        .map((event) => parseResultByType<List<OutputResponse>>(event))
+        .first;
   }
 
-  Stream<TreeResponse> get tree {
-    this
-        .connected
-        .then((value) => this.connection.write(format(CommandTypes.GET_TREE)));
+  Future<TreeResponse> get tree {
+    this.connection.write(format(CommandTypes.GET_TREE));
     return this
         .messageEvents
         .where((event) => event.type == CommandTypes.GET_TREE)
-        .map((event) => TreeResponse.fromJsonString(event.response));
+        .map((event) => parseResultByType<TreeResponse>(event))
+        .first;
   }
 
-  Stream<VersionResponse> get version {
-    this.connected.then(
-        (value) => this.connection.write(format(CommandTypes.GET_VERSION)));
+  Future<VersionResponse> get version {
+    this.connection.write(format(CommandTypes.GET_VERSION));
     return this
         .messageEvents
         .where((event) => event.type == CommandTypes.GET_VERSION)
-        .map((event) => VersionResponse.fromJsonString(event.response));
+        .map((event) => parseResultByType<VersionResponse>(event))
+        .first;
+  }
+
+  T parseResultByType<T>(ParseResult result) {
+    print('type: ' + result.type.toString());
+    switch (result.type) {
+      case CommandTypes.GET_WORKSPACES:
+        return WorkSpace.fromJsonString(result.response) as T;
+      case CommandTypes.RUN_COMMAND:
+        return CommandResponse.fromJsonString(result.response) as T;
+      case CommandTypes.GET_BAR_CONFIG:
+        // TODO: this command works for two things depending on the payload when the command is sent
+        // return BarConfigResponse.fromJsonString(result.response) as T;
+        return BarsConfigResponse.fromJsonString(result.response) as T;
+      case CommandTypes.GET_BINDING_MODES:
+        return BindingModesResponse.fromJsonString(result.response) as T;
+      case CommandTypes.GET_BINDING_STATE:
+        return BindingStateResponse.fromJsonString(result.response) as T;
+      case CommandTypes.GET_CONFIG:
+        return ConfigResponse.fromJsonString(result.response) as T;
+      case CommandTypes.GET_MARKS:
+        return MarkResponse.fromJsonString(result.response) as T;
+      case CommandTypes.GET_OUTPUTS:
+        return OutputResponse.fromJsonString(result.response) as T;
+      case CommandTypes.GET_TREE:
+        return TreeResponse.fromJsonString(result.response) as T;
+      case CommandTypes.GET_VERSION:
+        return VersionResponse.fromJsonString(result.response) as T;
+      default:
+        throw 'Type not supported: ' + result.type.toString();
+    }
+  }
+
+  Stream<T> messages<T>() {
+    return _messageController.stream
+        .where((event) => ResponseTypes.isOfType<T>(event.type))
+        .map((event) => parseResultByType<T>(event));
   }
 
   destroy() {

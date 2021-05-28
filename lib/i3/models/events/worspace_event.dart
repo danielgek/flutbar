@@ -5,14 +5,13 @@ class WorspaceEvent {
   Node current;
   Node old;
 
-  WorspaceEvent({this.change, this.current, this.old});
+  WorspaceEvent(
+      {required this.change, required this.current, required this.old});
 
-  WorspaceEvent.fromJson(Map<String, dynamic> json) {
-    change = json['change'];
-    current =
-        json['current'] != null ? new Node.fromJson(json['current']) : null;
-    old = json['old'] != null ? new Node.fromJson(json['old']) : null;
-  }
+  WorspaceEvent.fromJson(Map<String, dynamic> json)
+      : change = json['change'],
+        current = Node.fromJson(json['current']),
+        old = Node.fromJson(json['old']);
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -25,4 +24,7 @@ class WorspaceEvent {
     }
     return data;
   }
+
+  @override
+  String toString() => "Workspace Event -> change: $change";
 }

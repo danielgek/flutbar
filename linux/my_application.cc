@@ -51,6 +51,7 @@ static void my_application_activate(GApplication* application) {
   GdkDisplay *display;
 	int monitors_num;
 	GdkRectangle dest;
+  int height = 48; // 24
  
  screen = gtk_window_get_screen(window);
   display =  gdk_display_get_default();
@@ -62,7 +63,7 @@ static void my_application_activate(GApplication* application) {
   GdkMonitor *moni = gdk_display_get_monitor(display, 0);
 	 gdk_monitor_get_geometry(moni, &dest);
 
-  gtk_window_set_default_size(window, dest.width, 24);
+  gtk_window_set_default_size(window, dest.width, height);
 	gtk_window_stick(window);
 	gtk_window_set_decorated(window, FALSE);
 	gtk_window_set_skip_pager_hint(window, TRUE);
@@ -75,8 +76,8 @@ static void my_application_activate(GApplication* application) {
   fl_dart_project_set_dart_entrypoint_arguments(project, self->dart_entrypoint_arguments);
 
   FlView* view = fl_view_new(project);
-  gtk_widget_set_size_request(GTK_WIDGET(view), dest.width, 24);
-  gtk_window_move(window, 24, 24);
+  gtk_widget_set_size_request(GTK_WIDGET(view), dest.width, height);
+  gtk_window_move(window, 0, 0);
   gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(view));
   gtk_widget_show(GTK_WIDGET(window));
   gtk_widget_show(GTK_WIDGET(view));

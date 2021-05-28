@@ -1,3 +1,15 @@
+import 'package:flutbar/i3/models/messages/responses/barconfig_response.dart';
+import 'package:flutbar/i3/models/messages/responses/barsconfig_response.dart';
+import 'package:flutbar/i3/models/messages/responses/bindingmodes_response.dart';
+import 'package:flutbar/i3/models/messages/responses/bindingstate_response.dart';
+import 'package:flutbar/i3/models/messages/responses/config_response.dart';
+import 'package:flutbar/i3/models/messages/responses/mark_response.dart';
+import 'package:flutbar/i3/models/messages/responses/output_response.dart';
+import 'package:flutbar/i3/models/messages/responses/run_commands_response.dart';
+import 'package:flutbar/i3/models/messages/responses/tree_response.dart';
+import 'package:flutbar/i3/models/messages/responses/version_response.dart';
+import 'package:flutbar/i3/models/messages/responses/workspaces_respose.dart';
+
 const MAGIC_STRING = "i3-ipc";
 
 class CommandTypes {
@@ -30,6 +42,31 @@ class ResponseTypes {
   static const int SEND_TICK = 10;
   static const int SYNC = 11;
   static const int GET_BINDING_STATE = 12;
+  static bool isOfType<T>(int type) {
+    if (T is Workspaces) {
+      return type == ResponseTypes.GET_WORKSPACES;
+    } else if (T is List<CommandResponse>) {
+      return type == ResponseTypes.RUN_COMMAND;
+    } else if (T is BarsConfigResponse || T is BarConfigResponse) {
+      return type == ResponseTypes.GET_BAR_CONFIG;
+    } else if (T is BindingModesResponse) {
+      return type == ResponseTypes.GET_BINDING_MODES;
+    } else if (T is BindingStateResponse) {
+      return type == ResponseTypes.GET_BINDING_STATE;
+    } else if (T is ConfigResponse) {
+      return type == ResponseTypes.GET_CONFIG;
+    } else if (T is MarkResponse) {
+      return type == ResponseTypes.GET_MARKS;
+    } else if (T is OutputResponse) {
+      return type == ResponseTypes.GET_OUTPUTS;
+    } else if (T is TreeResponse) {
+      return type == ResponseTypes.GET_TREE;
+    } else if (T is VersionResponse) {
+      return type == ResponseTypes.GET_VERSION;
+    } else {
+      throw 'Type not supported';
+    }
+  }
 }
 
 class EventsTypes {

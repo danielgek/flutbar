@@ -3,16 +3,13 @@ import 'dart:convert';
 class ConfigResponse {
   String config;
 
-  ConfigResponse(this.config);
+  ConfigResponse({required this.config});
 
-  ConfigResponse.fromJson(Map<String, dynamic> json) {
-    ConfigResponse(config = json['config']);
-  }
+  ConfigResponse.fromJson(Map<String, dynamic> json)
+      : config = json['config'] as String;
 
   factory ConfigResponse.fromJsonString(String json) {
-    var tagObjsJson = jsonDecode(json);
-    return ConfigResponse(
-        tagObjsJson.map((tagJson) => tagJson.toString()).toList());
+    return ConfigResponse.fromJson(jsonDecode(json));
   }
 
   Map<String, dynamic> toJson() {

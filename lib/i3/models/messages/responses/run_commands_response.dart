@@ -5,13 +5,14 @@ class CommandResponse {
   bool parseError;
   String error;
 
-  CommandResponse({this.success, this.parseError, this.error});
+  CommandResponse(
+      {required this.success, required this.parseError, required this.error});
 
-  CommandResponse.fromJson(Map<String, dynamic> json) {
-    success = json['success'];
-    parseError = json['parse_error'];
-    error = json['error'];
-  }
+  CommandResponse.fromJson(Map<String, dynamic> json)
+      : success = json['success'] as bool,
+        parseError = json['parse_error'] as bool,
+        error = json['error'] as String;
+
   static List<CommandResponse> fromJsonString(String json) {
     var tagObjsJson = jsonDecode('{ "list":' + json + '}')['list'] as List;
     return tagObjsJson

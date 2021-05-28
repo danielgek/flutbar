@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutbar/i3/models/common/gaps.dart';
 import 'package:flutbar/i3/models/common/rect.dart';
 
@@ -21,98 +23,92 @@ class Node {
   Rect windowRect;
   Rect geometry;
   String name;
-  int num;
-  Gaps gaps;
-  Null window;
-  Null windowType;
+  int? num;
+  Gaps? gaps;
+  int? window;
+  String? windowType;
   List<Node> nodes;
   List<Node> floatingNodes;
   List<int> focus;
   int fullscreenMode;
   bool sticky;
   String floating;
-  List<Null> swallows;
+  List<Null>? swallows;
 
   Node(
-      {this.id,
-      this.type,
-      this.orientation,
-      this.scratchpadState,
-      this.percent,
-      this.urgent,
-      this.focused,
-      this.output,
-      this.layout,
-      this.workspaceLayout,
-      this.lastSplitLayout,
-      this.border,
-      this.currentBorderWidth,
-      this.rect,
-      this.decoRect,
-      this.windowRect,
-      this.geometry,
-      this.name,
-      this.num,
-      this.gaps,
-      this.window,
-      this.windowType,
-      this.nodes,
-      this.floatingNodes,
-      this.focus,
-      this.fullscreenMode,
-      this.sticky,
-      this.floating,
-      this.swallows});
+      {required this.id,
+      required this.type,
+      required this.orientation,
+      required this.scratchpadState,
+      required this.percent,
+      required this.urgent,
+      required this.focused,
+      required this.output,
+      required this.layout,
+      required this.workspaceLayout,
+      required this.lastSplitLayout,
+      required this.border,
+      required this.currentBorderWidth,
+      required this.rect,
+      required this.decoRect,
+      required this.windowRect,
+      required this.geometry,
+      required this.name,
+      required this.num,
+      required this.gaps,
+      required this.window,
+      required this.windowType,
+      required this.nodes,
+      required this.floatingNodes,
+      required this.focus,
+      required this.fullscreenMode,
+      required this.sticky,
+      required this.floating});
 
-  Node.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    type = json['type'];
-    orientation = json['orientation'];
-    scratchpadState = json['scratchpad_state'];
-    percent = json['percent'];
-    urgent = json['urgent'];
-    focused = json['focused'];
-    output = json['output'];
-    layout = json['layout'];
-    workspaceLayout = json['workspace_layout'];
-    lastSplitLayout = json['last_split_layout'];
-    border = json['border'];
-    currentBorderWidth = json['current_border_width'];
-    rect = json['rect'] != null ? new Rect.fromJson(json['rect']) : null;
-    decoRect =
-        json['deco_rect'] != null ? new Rect.fromJson(json['deco_rect']) : null;
-    windowRect = json['window_rect'] != null
-        ? new Rect.fromJson(json['window_rect'])
-        : null;
-    geometry =
-        json['geometry'] != null ? new Rect.fromJson(json['geometry']) : null;
-    name = json['name'];
-    num = json['num'];
-    gaps = json['gaps'] != null ? new Gaps.fromJson(json['gaps']) : null;
-    window = json['window'];
-    windowType = json['window_type'];
-    if (json['nodes'] != null) {
-      nodes = [];
-      json['nodes'].forEach((v) {
-        nodes.add(new Node.fromJson(v));
-      });
-    }
-    if (json['floating_nodes'] != null) {
-      floatingNodes = [];
-      json['floating_nodes'].forEach((v) {
-        floatingNodes.add(new Node.fromJson(v));
-      });
-    }
-    focus = json['focus'].cast<int>();
-    fullscreenMode = json['fullscreen_mode'];
-    sticky = json['sticky'];
-    floating = json['floating'];
-    if (json['swallows'] != null) {
-      // swallows = new List<Null>();
-      // json['swallows'].forEach((v) { swallows.add(new Null.fromJson(v)); });
-      print('WOW found a swallows');
-      print(json['swallows']);
-    }
+  Node.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        type = json['type'],
+        orientation = json['orientation'],
+        scratchpadState = json['scratchpad_state'],
+        percent = json['percent'],
+        urgent = json['urgent'],
+        focused = json['focused'],
+        output = json['output'],
+        layout = json['layout'],
+        workspaceLayout = json['workspace_layout'],
+        lastSplitLayout = json['last_split_layout'],
+        border = json['border'],
+        currentBorderWidth = json['current_border_width'],
+        rect = Rect.fromJson(json['rect']),
+        decoRect = Rect.fromJson(json['deco_rect']),
+        windowRect = Rect.fromJson(json['window_rect']),
+        geometry = Rect.fromJson(json['geometry']),
+        name = json['name'],
+        num = json['num'],
+        gaps = json['gaps'] != null ? new Gaps.fromJson(json['gaps']) : null,
+        window = json['window'],
+        windowType = json['window_type'],
+        nodes = json['nodes'] != null
+            ? List<Node>.from(json['nodes'].map((v) => new Node.fromJson(v)))
+            : [],
+        floatingNodes = json['floating_nodes'] != null
+            ? List<Node>.from(
+                json['floating_nodes'].map((v) => new Node.fromJson(v)))
+            : [],
+        focus = json['focus'].cast<int>(),
+        fullscreenMode = json['fullscreen_mode'],
+        sticky = json['sticky'],
+        floating = json['floating'];
+  // if (json['swallows'] != null && json['swallows']) {
+  //   // swallows = new List<Null>();
+  //   // json['swallows'].forEach((v) { swallows.add(new Null.fromJson(v)); });
+  //   print('WOW found a swallows');
+  //   print(json['swallows']);
+  // }
+
+  static List<Node> fromJsonString(String json) {
+    var tagObjsJson = jsonDecode('{ "list":' + json + '}')['list'] as List;
+    return tagObjsJson.map((tagJson) => new Node.fromJson(tagJson)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -145,7 +141,7 @@ class Node {
     data['name'] = this.name;
     data['num'] = this.num;
     if (this.gaps != null) {
-      data['gaps'] = this.gaps.toJson();
+      data['gaps'] = this.gaps?.toJson();
     }
     data['window'] = this.window;
     data['window_type'] = this.windowType;

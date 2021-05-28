@@ -8,19 +8,18 @@ class VersionResponse {
   String loadedConfigFileName;
 
   VersionResponse(
-      {this.humanReadable,
-      this.major,
-      this.minor,
-      this.patch,
-      this.loadedConfigFileName});
+      {required this.humanReadable,
+      required this.major,
+      required this.minor,
+      required this.patch,
+      required this.loadedConfigFileName});
 
-  VersionResponse.fromJson(Map<String, dynamic> json) {
-    humanReadable = json['human_readable'];
-    major = json['major'];
-    minor = json['minor'];
-    patch = json['patch'];
-    loadedConfigFileName = json['loaded_config_file_name'];
-  }
+  VersionResponse.fromJson(Map<String, dynamic> json)
+      : humanReadable = json['human_readable'] as String,
+        major = json['major'] as int,
+        minor = json['minor'] as int,
+        patch = json['patch'] as int,
+        loadedConfigFileName = json['loaded_config_file_name'];
 
   factory VersionResponse.fromJsonString(String json) {
     return VersionResponse.fromJson(jsonDecode(json));

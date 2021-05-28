@@ -6,19 +6,18 @@ class WindowProperties {
   Null transientFor;
 
   WindowProperties(
-      {this.cssClass,
-      this.instance,
-      this.windowRole,
-      this.title,
-      this.transientFor});
+      {required this.cssClass,
+      required this.instance,
+      required this.windowRole,
+      required this.title,
+      required this.transientFor});
 
-  WindowProperties.fromJson(Map<String, dynamic> json) {
-    cssClass = json['class'];
-    instance = json['instance'];
-    windowRole = json['window_role'];
-    title = json['title'];
-    transientFor = json['transient_for'];
-  }
+  WindowProperties.fromJson(Map<String, dynamic> json)
+      : cssClass = json['class'],
+        instance = json['instance'],
+        windowRole = json['window_role'],
+        title = json['title'],
+        transientFor = json['transient_for'];
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
