@@ -3,7 +3,7 @@ import 'package:flutbar/i3/models/common/node.dart';
 class WorspaceEvent {
   String change;
   Node current;
-  Node old;
+  Node? old;
 
   WorspaceEvent(
       {required this.change, required this.current, required this.old});
@@ -11,7 +11,7 @@ class WorspaceEvent {
   WorspaceEvent.fromJson(Map<String, dynamic> json)
       : change = json['change'],
         current = Node.fromJson(json['current']),
-        old = Node.fromJson(json['old']);
+        old = json['old'] != null ? Node.fromJson(json['old']) : null;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -20,7 +20,7 @@ class WorspaceEvent {
       data['current'] = this.current.toJson();
     }
     if (this.old != null) {
-      data['old'] = this.old.toJson();
+      data['old'] = this.old!.toJson();
     }
     return data;
   }

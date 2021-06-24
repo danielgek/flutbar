@@ -9,10 +9,10 @@ class Node {
   String type;
   String orientation;
   String scratchpadState;
-  double percent;
+  double? percent;
   bool urgent;
   bool focused;
-  String output;
+  String? output;
   String layout;
   String workspaceLayout;
   String lastSplitLayout;
@@ -22,7 +22,7 @@ class Node {
   Rect decoRect;
   Rect windowRect;
   Rect geometry;
-  String name;
+  String? name;
   int? num;
   Gaps? gaps;
   int? window;
@@ -106,9 +106,8 @@ class Node {
   //   print(json['swallows']);
   // }
 
-  static List<Node> fromJsonString(String json) {
-    var tagObjsJson = jsonDecode('{ "list":' + json + '}')['list'] as List;
-    return tagObjsJson.map((tagJson) => new Node.fromJson(tagJson)).toList();
+  static Node fromJsonString(String json) {
+    return Node.fromJson(jsonDecode(json));
   }
 
   Map<String, dynamic> toJson() {
