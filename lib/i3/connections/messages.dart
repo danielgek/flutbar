@@ -22,9 +22,11 @@ class MessagesConnection {
   Stream<ParseResult> get messageEvents => _messageController.stream;
   MessagesConnection({required this.connection}) {
     print("Connected MessagesConnection");
-    this
-        .connection
-        .listen((event) => this._messageController.sink.add(parse(event)));
+    this.connection.listen((events) {
+      parse(events).forEach((event) {
+        this._messageController.sink.add(event);
+      });
+    });
   }
   static Future<MessagesConnection> getInstance() async {
     final host = InternetAddress(Platform.environment['I3SOCK'] as String,
@@ -135,7 +137,6 @@ class MessagesConnection {
   }
 
   T parseResultByType<T>(ParseResult result) {
-    print('type: ' + result.type.toString());
     switch (result.type) {
       case CommandTypes.GET_WORKSPACES:
         return WorkSpace.fromJsonString(result.response) as T;

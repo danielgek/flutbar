@@ -47,24 +47,19 @@ class ParseResult {
   String toString() => "ParseResult:(event: $event, size: $size, type: $type)";
 }
 
-parse(Uint8List data) {
+List<ParseResult> parse(Uint8List data) {
   String content = String.fromCharCodes(data);
-  if (content.substring(0, MAGIC_STRING.length).toString() != MAGIC_STRING) {
-    return {'error': 'wrong magic code'};
-  }
+  return content.split(MAGIC_STRING).where((c) => c.length > 0).map((c) {
+    int size = unpackInt(c.substring(0, 4));
+    int type = unpackInt(c.substring(4, 8));
 
-  int size = unpackInt(content
-      .substring(MAGIC_STRING.length, MAGIC_STRING.length + 4)
-      .toString());
-  int type = unpackInt(content
-      .substring(MAGIC_STRING.length + 4, MAGIC_STRING.length + 8)
-      .toString());
-  String response = content.substring(MAGIC_STRING.length + 8, data.length);
+    String response = c.substring(8);
 
-  bool event = (content.codeUnitAt(MAGIC_STRING.length + 7) & 0x80) == 0x80;
+    bool event = (c.codeUnitAt(7) & 0x80) == 0x80;
 
-  if (event) type = type = type & 0x7f;
+    if (event) type = type = type & 0x7f;
 
-  return new ParseResult(
-      event: event, size: size, response: response, type: type);
+    return new ParseResult(
+        event: event, size: size, response: response, type: type);
+  }).toList();
 }

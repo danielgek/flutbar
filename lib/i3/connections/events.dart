@@ -18,8 +18,10 @@ class EventsConnection {
   Socket connection;
   EventsConnection({required this.connection}) {
     print("Connected EventsConnection");
-    this.connection.listen((event) {
-      _eventMessage(parse(event));
+    this.connection.listen((events) {
+      parse(events).forEach((event) {
+        _eventMessage(event);
+      });
     });
   }
   static Future<EventsConnection> getInstance() async {
@@ -56,27 +58,6 @@ class EventsConnection {
 
   final _windowController = StreamController<WindowEvent>.broadcast();
   Stream<WindowEvent> get windowEvents => _windowController.stream;
-
-  Future<bool> _init() {
-    final host = InternetAddress(this.path, type: InternetAddressType.unix);
-    Future<bool> connection = Socket.connect(host, 0).then((value) {
-      if (value == null) {
-        return false;
-      }
-      print("Connected Events");
-      this.connection = value;
-      this.connection.listen((event) {
-        _eventMessage(parse(event));
-      });
-
-      return true;
-    }).catchError((e) {
-      print("Unable to connect: $e");
-      return false;
-    });
-
-    return connection;
-  }
 
   void _eventMessage(ParseResult result) {
     if (result == null && result.type != null) {
