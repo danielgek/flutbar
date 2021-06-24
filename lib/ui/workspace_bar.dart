@@ -28,14 +28,14 @@ class WorkspaceBar extends StatelessWidget {
                 if (event is PointerScrollEvent && event.down == false) {
                   int focusedWorkspaceIndex =
                       workspaces.indexWhere((w) => w.focused);
-                  if (event.scrollDelta.dy < -12 &&
+                  if (event.scrollDelta.dy > 20 &&
                       focusedWorkspaceIndex + 1 < workspaces.length) {
                     WorkSpace? nextWorkspace =
                         workspaces[focusedWorkspaceIndex + 1];
                     if (nextWorkspace is WorkSpace) {
                       i3.goToWorkspace(nextWorkspace.index);
                     }
-                  } else if (event.scrollDelta.dy > 12 &&
+                  } else if (event.scrollDelta.dy < -20 &&
                       focusedWorkspaceIndex - 1 >= 0) {
                     WorkSpace? previousWorkspace =
                         workspaces[focusedWorkspaceIndex - 1];
