@@ -16,9 +16,15 @@ class Flutbar extends StatelessWidget {
     return FutureBuilder<List<dynamic>>(
       builder: (context, i3) {
         if (i3.hasData == false) {
-          return Container(
-            child: Text('Connecting to i3'),
-          );
+          return MaterialApp(
+              title: 'Connecting to i3',
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(
+                primarySwatch: Colors.blue,
+              ),
+              home: Scaffold(
+                body: Text('Connecting to i3'),
+              ));
         }
         return I3Widget(
             messageConnection: i3.data?.first,
