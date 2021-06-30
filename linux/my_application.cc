@@ -51,7 +51,7 @@ static void my_application_activate(GApplication* application) {
   GdkDisplay *display;
 	int monitors_num;
 	GdkRectangle dest;
-  int height = 48; // 24
+  int height = 30; // 24
  
  screen = gtk_window_get_screen(window);
   display =  gdk_display_get_default();
