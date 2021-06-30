@@ -1,6 +1,7 @@
 import 'package:flutbar/I3Widget.dart';
 import 'package:flutbar/i3/connections/events.dart';
 import 'package:flutbar/i3/connections/messages.dart';
+import 'package:flutbar/ui/battery.dart';
 import 'package:flutbar/ui/clock.dart';
 import 'package:flutbar/ui/title.dart';
 import 'package:flutbar/ui/workspaces/workspace_bar.dart';
@@ -71,12 +72,15 @@ class Bar extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-                height: 30, alignment: Alignment.center, child: WorkspaceBar()),
-            Container(
+                height: 28, alignment: Alignment.center, child: WorkspaceBar()),
+            Expanded(
               child: TitleBar(),
             ),
             Container(
-              child: Clock(),
+              child: Row(
+                children: [BatteryBlock(), Clock()],
+                mainAxisAlignment: MainAxisAlignment.center,
+              ),
             ),
           ],
         ));

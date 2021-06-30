@@ -2,6 +2,9 @@
 
 Yet another i3 status bar made with flutter.
 
+# Screenshots:
+![Screenshot 1](screenshots/screenshot1.png?raw=true "Screenshot")
+![gif](screenshots/vid.gif?raw=true "Gif")
 # Todo:
 
 - [X] design(for now, will bw replaced with configs)

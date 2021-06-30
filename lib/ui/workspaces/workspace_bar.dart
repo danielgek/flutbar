@@ -11,7 +11,7 @@ class WorkspaceBar extends StatefulWidget {
 }
 
 class _WorkspaceBar extends State<WorkspaceBar> with TickerProviderStateMixin {
-  final Duration duration = const Duration(milliseconds: 100);
+  final Duration duration = const Duration(milliseconds: 200);
   AnimationController? _controller;
 
   @override
@@ -76,33 +76,24 @@ class _WorkspaceBar extends State<WorkspaceBar> with TickerProviderStateMixin {
                             .indexOf(workspaces.firstWhere(
                                 (element) => element.focused == true))
                             .floorToDouble() *
-                        30,
+                        28,
                     top: 0,
                     duration: duration,
                     child: Container(
-                      padding: EdgeInsets.all(5.5),
+                      padding: EdgeInsets.all(5),
                       // margin: EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
-                      width: 30,
-                      height: 30,
+                      width: 28,
+                      height: 28,
                       alignment: Alignment.center,
                       child: Container(
                           decoration: const BoxDecoration(
                               color: Color(0xFFffcc66),
-                              border: Border(
-                                top: BorderSide
-                                    .none, // BorderSide(width: 0, color: Color(0x00FF0000)),
-                                left: BorderSide
-                                    .none, // BorderSide(width: 0, color: Color(0xFFFFFFFF)),
-                                right: BorderSide
-                                    .none, // BorderSide(width: 0, color: Color(0xFF000000)),
-                                bottom: BorderSide
-                                    .none, //BorderSide(width: 2, color: Color(0xFF707A8C)),
-                              ),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(2)))),
                     ),
                   ),
                   Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: workspaces
                           .map((workspace) =>
                               WorkspaceBarItem(workspace: workspace))

@@ -18,13 +18,16 @@ class TitleBar extends StatelessWidget {
             return Container(child: Text('loading'));
           } else {
             return Container(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                alignment: Alignment.center,
                 child: Text(
-              snapshot.data ?? 'no title ? this is wierd',
-              style: TextStyle(
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF707A8C)),
-            ));
+                  snapshot.data ?? 'no title ? this is wierd',
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF707A8C)),
+                ));
           }
         });
   }

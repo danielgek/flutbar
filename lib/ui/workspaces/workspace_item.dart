@@ -10,14 +10,13 @@ class WorkspaceBarItem extends StatelessWidget {
     I3Widget i3 = I3Widget.of(context);
     return GestureDetector(
         child: Container(
-          padding: EdgeInsets.all(5.5),
-          width: 30,
-          height: 30,
+          width: 28,
+          height: 28,
           alignment: Alignment.center,
           child: Text(workspace.name,
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 14.0,
+                  fontSize: 15.0,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF1f2430))),
         ),

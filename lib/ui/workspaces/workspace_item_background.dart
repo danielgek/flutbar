@@ -11,24 +11,14 @@ class WorkspaceBarBackground extends StatelessWidget {
     I3Widget i3 = I3Widget.of(context);
     return GestureDetector(
         child: Container(
-          padding: EdgeInsets.all(5.5),
+          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
           // margin: EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
-          width: 30,
-          height: 30,
+          width: 28,
+          height: 28,
           alignment: Alignment.center,
           child: Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                   color: Color(0xFF707A8C),
-                  border: Border(
-                    top: BorderSide
-                        .none, // BorderSide(width: 0, color: Color(0x00FF0000)),
-                    left: BorderSide
-                        .none, // BorderSide(width: 0, color: Color(0xFFFFFFFF)),
-                    right: BorderSide
-                        .none, // BorderSide(width: 0, color: Color(0xFF000000)),
-                    bottom: BorderSide
-                        .none, //BorderSide(width: 2, color: Color(0xFF707A8C)),
-                  ),
                   borderRadius: BorderRadius.all(Radius.circular(2)))),
         ),
         onTap: () => i3.goToWorkspace(workspace.index));
