@@ -30,10 +30,11 @@ class Flutbar extends StatelessWidget {
             messageConnection: i3.data?.first,
             eventsConnection: i3.data?.last,
             child: MaterialApp(
-              title: 'Flutter Demo',
+              title: 'Flutbar',
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
                 primarySwatch: Colors.blue,
+                fontFamily: 'RobotoMono',
               ),
               home: Scaffold(
                 body: Bar(),

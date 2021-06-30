@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutbar/i3/utils/constants.dart';
@@ -53,7 +54,7 @@ List<ParseResult> parse(Uint8List data) {
     int size = unpackInt(c.substring(0, 4));
     int type = unpackInt(c.substring(4, 8));
 
-    String response = c.substring(8);
+    String response = utf8.decode(c.substring(8).codeUnits);
 
     bool event = (c.codeUnitAt(7) & 0x80) == 0x80;
 
