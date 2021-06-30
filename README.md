@@ -4,10 +4,15 @@ Yet another i3 status bar made with flutter.
 
 # Todo:
 
-- [ ] design
-- [ ] finish i3 ipc(maybe extract it to a dart package)
-- [ ] show system tray
+- [X] design(for now, will bw replaced with configs)
+- [X] finish i3 ipc(~~maybe extract it to a dart package~~ done, not fully tested and not extracted)
+- [ ] baterry
+- [ ] wifi
+- [ ] screen brightness
+- [ ] sound
+- [ ] session button
 - [ ] plugin system/configuration
+- [ ] show system tray
 
 ## Getting Started
 
